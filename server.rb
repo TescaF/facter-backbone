@@ -1,24 +1,27 @@
+require 'rubygems'
 require 'sinatra'
-require 'facter'
-
-before do
-	@facts = Facter.to_hash
-	@factlist = @facts.keys
-end
+require 'mcollective'
+require 'fact_finder'
 
 get '/fact/:factname' do
-	fact_name = params[:factname]
-	if !@factlist.include?(fact_name)
-		"#{fact_name} is not a fact name. <p> You must select one of the following: <br>#{@factlist}"
-	else	
-		"#{params[:factname]} => #{@facts[params[:factname]]}"
-	end
+	ARGV.unshift params[:factname]
+	MCollective::Applications.run "facts"
+	facts = FactFinder.display_fact params[:factname]
+	"#{facts}"
 end
 
 get '/all' do
 	@facts.map do |k,v|
 		"#{k} => #{v}<br>"
 	end
+end
+
+get '/' do
+	"Hi"
+end
+
+get '/ping' do
+	MCollective::Applications.run "ping"
 end
 
 get '/facts' do
