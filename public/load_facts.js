@@ -1,10 +1,10 @@
 (function ($) {
   
-  Friend = Backbone.Model.extend({
+  Search = Backbone.Model.extend({
     name: null
   });
   
-  Friends = Backbone.Collection.extend({
+  Searches = Backbone.Collection.extend({
     initialize: function (models, options) {
     }
   });
@@ -14,8 +14,7 @@
     initialize: function () {
     },
     events: {
-      "click #display-all":  "showAll",
-      "keyup #facter-request": "showNewText",
+      "click #display-facts":  "showNewText",
     },
     showAll: function () {
       $("#fact-text").load('/all');
